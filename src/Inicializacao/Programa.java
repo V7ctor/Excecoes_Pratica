@@ -36,17 +36,14 @@ public class Programa {
 		dataE = sdf.parse(sc.next());
 		System.out.print("Data de Saída: ");
 		dataS = sdf.parse(sc.next());
-		
-		Date agora = new Date();//Gera horário atual, segundo o PC
-		
-		if (dataE.before(agora) || dataS.before(agora)) {//Se a Data de entrada for antes da data atual, então faça: 
-			System.out.println("As datas de reserva não podem ser datas passadas.");
-		}else if (!dataS.after(dataE)) { //Se a data de Saida não for depois da data de Entrada, então ocasionará no erro.
-			System.out.println("A Data de Saida não pode ser inferior à data de Entrada.");
-		}else {		
-     	r.AtualizarData(dataE, dataS);
+				
+     	String erro = r.AtualizarData(dataE, dataS);
+     	
+     	if (erro != null) {
+     	System.out.println("Erro na reserva: "+ erro);
+     	}else {
 		System.out.println("Reserva: " + r);
-		}
+     	}
 		}
 		sc.close();
 	}

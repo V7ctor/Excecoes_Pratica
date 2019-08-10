@@ -43,9 +43,17 @@ public class Reserva {
 		// CalculoMili, a classe TimeUnit irá fazer a operação automaticamente para nós. 
 	}
 	
-	public void AtualizarData(Date entrada, Date saida) {
+	public String AtualizarData(Date entrada, Date saida) {
+		Date agora = new Date();
+		if (entrada.before(agora) || saida.before(agora)) { 
+			return "As datas de reserva não podem ser datas passadas.";
+		}if (!saida.after(entrada)) { 
+			return "A Data de Saida não pode ser inferior à data de Entrada.";
+		}
 		this.DataEntrada = entrada;
 		this.DataSaida = saida;
+		return null;//Critério para dizer que nossa operação não deu erros 
+
 	}
 
 	@Override
