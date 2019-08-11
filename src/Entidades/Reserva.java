@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import Excecoes.Dominio;
+
 public class Reserva {
 
 	private static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -12,7 +14,10 @@ public class Reserva {
 	private Date DataEntrada;
 	private Date DataSaida;
 
-	public Reserva(Integer numeroQuarto, Date dataEntrada, Date dataSaida) {
+	public Reserva(Integer numeroQuarto, Date dataEntrada, Date dataSaida) throws Dominio {
+	    if (!dataSaida.after(dataEntrada)) { //Tratamos o erro no próprio construtor na primeira inserção de Datas.
+		     throw new Dominio("A Data de Saida não pode ser inferior à data de Entrada.");
+	    }
 		NumeroQuarto = numeroQuarto;
 		DataEntrada = dataEntrada;
 		DataSaida = dataSaida;
@@ -43,17 +48,17 @@ public class Reserva {
 		// CalculoMili, a classe TimeUnit irá fazer a operação automaticamente para nós. 
 	}
 	
-	public String AtualizarData(Date entrada, Date saida) {
+	public void AtualizarData(Date entrada, Date saida) throws Dominio{
 		Date agora = new Date();
 		if (entrada.before(agora) || saida.before(agora)) { 
-			return "As datas de reserva não podem ser datas passadas.";
+			throw new Dominio("As datas de reserva não podem ser datas passadas.");
+			//A exceção "IllegalArgumentException" serve justamente quando os argumentos que passamos são inválidos
+			//Sempre que usarmos os argumentos inválidos, cabe-se ás exceções do tipo IllegalArgumentException.
 		}if (!saida.after(entrada)) { 
-			return "A Data de Saida não pode ser inferior à data de Entrada.";
+			throw new Dominio("A Data de Saida não pode ser inferior à data de Entrada.");
 		}
 		this.DataEntrada = entrada;
 		this.DataSaida = saida;
-		return null;//Critério para dizer que nossa operação não deu erros 
-
 	}
 
 	@Override
